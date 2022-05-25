@@ -1,0 +1,8 @@
+* {
+    text-align: center;
+}
+
+ul > li > h4{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}

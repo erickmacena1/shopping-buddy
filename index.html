@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +8,34 @@
 
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
-    
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Shopping Buddy</title>
 </head>
+
 <body>
-    
+    <h3><button id="back">◀</button></h3>
+
+    <h3>
+        <label for="productName">📛</label>
+        <input id="productName" type="text">
+    </h3>
+
+    <h3>
+        <label for="productPrice">💲</label>
+        <input id="productPrice" type="text" oninput="this.value = this.value.replace(',', '.').replace(/[a-z]/g,'')">
+    </h3>
+
+    <h3>
+        <label for="productQuantity">±</label>
+        <input id="productQuantity" type="number">
+    </h3>
+
+    <h1><button id="add">➕</button></h1>
+
+
+    <ul id="productList">
+
+    </ul>
 </body>
+
 </html>
