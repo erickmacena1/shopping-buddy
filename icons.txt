@@ -1,0 +1,14 @@
+Buddy🐱‍👤
+
+Add: ➕
+Back: ◀
+Product: 📛
+Cash: 💲
+Quantity: ±
+ItemAdd: ➕🛒
+Cancel: ×
+AllItens: ±🛒
+ItemRemove: ➖🛒
+Yes: 👍
+No: 👎
+Export: ◀🎲
