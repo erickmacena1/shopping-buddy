@@ -34,8 +34,6 @@ const fillConfirmExport = () => {
 
     $confirmExport.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(data))
     $confirmExport.setAttribute('download', 'shopping-data-' + dateFormatted + '.json')
-
-    closeExportModal()
 }
 
 const openExportModal = () => {
