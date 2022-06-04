@@ -7,6 +7,9 @@ const $export = qs('#export')
 const $confirmExport = qs('#confirmExport')
 const $rejectExport = qs('#rejectExport')
 
+const $storeName = qs("#storeName")
+const $date = qs("#date")
+
 const $productName = qs('#productName')
 const $productPrice = qs('#productPrice')
 const $productQuantity = qs('#productQuantity')
@@ -17,7 +20,6 @@ const $add = qs('#add')
 const $productList = qs('#productList')
 
 let products = JSON.parse(localStorage.getItem('products')) || []
-
 
 const closeExportModal = () => {
     $confirmExport.setAttribute('href', '')
@@ -39,6 +41,10 @@ const fillConfirmExport = () => {
 const openExportModal = () => {
     fillConfirmExport()
     $exportModal.classList.remove('d-none')
+}
+
+const countItems = () => {
+    
 }
 
 const removeItem = (item) => {
@@ -80,8 +86,13 @@ const addItem = () => {
     updateProductList()
 }
 
-$back.onclick = cleanInputs
+const getDateYYYYMMDD = (date = new Date(), separator = "-") => {
+    return String(date.getFullYear() + separator + (date.getMonth() + 1).toString().padStart(2, "0") + separator + date.getDate().toString().padStart(2, "0"))
+}
 
+$date.value = getDateYYYYMMDD()
+
+$back.onclick = cleanInputs
 $add.onclick = addItem
 
 $export.onclick = openExportModal
