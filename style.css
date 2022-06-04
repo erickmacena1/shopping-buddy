@@ -21,9 +21,9 @@ ul>li>h4 {
     display: none !important;
 }
 
-.exportModal {
-    position: absolute;
-    width: 100%;
+.modal {
+    position: sticky;
+    width: calc(100vw - 25px);
     height: 100vh;
     top: 0;
     bottom: 0;
