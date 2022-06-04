@@ -25,6 +25,7 @@ const $productList = qs('#productList')
 const $sumaryCount = qs("#sumaryCount")
 const $sumaryMoney = qs("#sumaryMoney")
 
+let sbStore;
 let products = JSON.parse(localStorage.getItem('products')) || []
 
 const closeExportModal = () => {
@@ -111,5 +112,16 @@ $add.onclick = addItem
 
 $export.onclick = openExportModal
 $rejectExport.onclick = closeExportModal
+
+sbStore = JSON.parse(localStorage.getItem('sbStore'))
+    ||
+{
+    purchaseHistory: [],
+    currentPurchase: {
+        storeName: $storeName.value,
+        date: $date.value,
+        products: [],
+    },
+}
 
 updateProductList()
