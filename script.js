@@ -25,17 +25,28 @@ const $productList = qs('#productList')
 const $sumaryCount = qs("#sumaryCount")
 const $sumaryMoney = qs("#sumaryMoney")
 
-let sbStore;
-let products = JSON.parse(localStorage.getItem('products')) || []
+const STOREKEY = 'sbStore';
+const STOREMODEL = {
+    purchaseHistory: [],
+    currentPurchase: {
+        storeName: "Store Name",
+        date: String,
+        products: [],
+    },
+};
 
-const closeExportModal = () => {
+let sbStore = STOREMODEL
+let currentPurchase = sbStore.currentPurchase
+let products = currentPurchase.products
+
+const CloseExportModal = () => {
     $confirmExport.setAttribute('href', '')
     $confirmExport.setAttribute('download', '')
 
     $exportModal.classList.add('d-none')
 }
 
-const fillConfirmExport = () => {
+const FillConfirmExport = () => {
     const data = JSON.stringify(products)
 
     const todayDate = new Date()
@@ -45,83 +56,91 @@ const fillConfirmExport = () => {
     $confirmExport.setAttribute('download', 'shopping-data-' + dateFormatted + '.json')
 }
 
-const openExportModal = () => {
-    fillConfirmExport()
+const OpenExportModal = () => {
+    FillConfirmExport()
     $exportModal.classList.remove('d-none')
 }
 
-const countTotalItems = ($productList = qs("#productList")) => {
+const CountTotalItems = ($productList = qs("#productList")) => {
     return qsa('.item', $productList).length
 }
 
-const countCashTotalPrice = () => {
+const CountCashTotalPrice = ($productList = qs("#productList")) => {
     return qsa('.item div:nth-child(3)', $productList)
         .reduce((sum, $priceDiv) => sum += parseFloat($priceDiv.innerText), 0)
 }
 
-const removeItem = (item) => {
+const RemoveItem = (item) => {
     products.splice(item, 1)
 
-    updateProductList()
+    UpdateProductList()
 }
 
 const productListHeader = "<li><h4><div>➖🛒</div><div>📛</div><div>💲</div><div>±</div></h4></li>";
-const updateProductList = () => {
+const UpdateProductList = () => {
     $productList.innerHTML = productListHeader
 
     for (let item in products) {
         const product = products[item]
 
         const $template = document.createElement('template')
-        $template.innerHTML = `<li class="item"><h4><button id="${item}" onclick="removeItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`
+        $template.innerHTML = `<li class="item"><h4><button id="${item}" onclick="RemoveItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`
 
         $productList.appendChild($template.content.firstChild)
     }
 
-    $sumaryCount.innerText = countTotalItems()
-    $sumaryMoney.innerText = countCashTotalPrice()
-
-    localStorage.setItem('products', JSON.stringify(products))
+    $sumaryCount.innerText = CountTotalItems()
+    $sumaryMoney.innerText = CountCashTotalPrice()
+    console.log("Store updated")
+    console.log(sbStore)
+    localStorage.setItem(STOREKEY, JSON.stringify(sbStore))
 }
 
-const cleanInputs = () => {
+const CleanInputs = () => {
     $productName.value = ""
     $productPrice.value = ""
     $productQuantity.value = ""
 }
 
-const addItem = () => {
+const AddItem = () => {
     products.push({
         name: $productName.value,
         price: $productPrice.value,
         quantity: $productQuantity.value
     })
 
-    cleanInputs()
-    updateProductList()
+    CleanInputs()
+    UpdateProductList()
 }
 
-const getDateYYYYMMDD = (date = new Date(), separator = "-") => {
+const GetDateYYYYMMDD = (date = new Date(), separator = "-") => {
     return String(date.getFullYear() + separator + (date.getMonth() + 1).toString().padStart(2, "0") + separator + date.getDate().toString().padStart(2, "0"))
 }
 
-$date.value = getDateYYYYMMDD()
-
-$back.onclick = cleanInputs
-$add.onclick = addItem
-
-$export.onclick = openExportModal
-$rejectExport.onclick = closeExportModal
-
-sbStore = JSON.parse(localStorage.getItem('sbStore'))
-    ||
-{
-    purchaseHistory: [],
-    currentPurchase: {
-        storeName: $storeName.value,
-        date: $date.value,
-        products: [],
-    },
+const OnStoreNameChange = () => {
+    currentPurchase.storeName = $storeName.value
+    UpdateProductList()
 }
 
-updateProductList()
+const OnDateChange = () => {
+    currentPurchase.date = $date.value
+    UpdateProductList()
+}
+
+$storeName.onchange = OnStoreNameChange
+$date.onchange = OnDateChange
+
+$back.onclick = CleanInputs
+$add.onclick = AddItem
+
+$export.onclick = OpenExportModal
+$rejectExport.onclick = CloseExportModal
+
+sbStore = JSON.parse(localStorage.getItem(STOREKEY)) || STOREMODEL
+currentPurchase = sbStore.currentPurchase
+products = currentPurchase.products
+
+$storeName.value = currentPurchase.storeName
+$date.value = currentPurchase.date == "" ? GetDateYYYYMMDD() : currentPurchase.date
+
+UpdateProductList()
