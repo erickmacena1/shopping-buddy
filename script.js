@@ -2,6 +2,10 @@ const qs = (selector, parent = document) => {
     return parent.querySelector(selector)
 }
 
+const qsa = (selector, parent = document) => {
+    return Array.from(parent.querySelectorAll(selector))
+}
+
 const $exportModal = qs('#exportModal')
 const $export = qs('#export')
 const $confirmExport = qs('#confirmExport')
@@ -18,13 +22,15 @@ const $back = qs('#back')
 const $add = qs('#add')
 
 const $productList = qs('#productList')
+const $sumaryCount = qs("#sumaryCount")
+const $sumaryMoney = qs("#sumaryMoney")
 
 let products = JSON.parse(localStorage.getItem('products')) || []
 
 const closeExportModal = () => {
     $confirmExport.setAttribute('href', '')
     $confirmExport.setAttribute('download', '')
-    
+
     $exportModal.classList.add('d-none')
 }
 
@@ -32,7 +38,7 @@ const fillConfirmExport = () => {
     const data = JSON.stringify(products)
 
     const todayDate = new Date()
-    const dateFormatted = `${todayDate.getDate()}.${todayDate.getMonth()+1}.${todayDate.getFullYear()}`
+    const dateFormatted = `${todayDate.getDate()}.${todayDate.getMonth() + 1}.${todayDate.getFullYear()}`
 
     $confirmExport.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(data))
     $confirmExport.setAttribute('download', 'shopping-data-' + dateFormatted + '.json')
@@ -43,8 +49,13 @@ const openExportModal = () => {
     $exportModal.classList.remove('d-none')
 }
 
-const countItems = () => {
-    
+const countTotalItems = ($productList = qs("#productList")) => {
+    return qsa('.item', $productList).length
+}
+
+const countCashTotalPrice = () => {
+    return qsa('.item div:nth-child(3)', $productList)
+        .reduce((sum, $priceDiv) => sum += parseFloat($priceDiv.innerText), 0)
 }
 
 const removeItem = (item) => {
@@ -61,10 +72,13 @@ const updateProductList = () => {
         const product = products[item]
 
         const $template = document.createElement('template')
-        $template.innerHTML = `<li><h4><button id="${item}" onclick="removeItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`
+        $template.innerHTML = `<li class="item"><h4><button id="${item}" onclick="removeItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`
 
         $productList.appendChild($template.content.firstChild)
     }
+
+    $sumaryCount.innerText = countTotalItems()
+    $sumaryMoney.innerText = countCashTotalPrice()
 
     localStorage.setItem('products', JSON.stringify(products))
 }
