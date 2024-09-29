@@ -95,7 +95,7 @@ const RemoveItem = (item) => {
     UpdateUI()
 }
 
-const productListHeader = "<li><h4><div>➖🛒</div><div>📛</div><div>💲</div><div>±</div></h4></li>";
+const productListHeader = "<li><h4><div>➖🛒</div><div>🛍️</div><div>💲</div><div>±</div></h4></li>";
 const UpdateUI = () => {
     currentPurchase.storeName = $storeName.value
     currentPurchase.date = $date.value
