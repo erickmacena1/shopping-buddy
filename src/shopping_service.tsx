@@ -1,36 +1,36 @@
-const qs = (selector, parent = document) => {
+const qs = (selector: string, parent: Document | Element = document) => {
     return parent.querySelector(selector)
 }
 
-const qsa = (selector, parent = document) => {
+const qsa = (selector: string, parent: Document | Element = document) => {
     return Array.from(parent.querySelectorAll(selector))
 }
 
-const $storeName = qs("#storeName")
-const $date = qs("#date")
+const $storeName = qs("#storeName") as HTMLInputElement | any
+const $date = qs("#date") as HTMLInputElement | any
 
-const $productName = qs('#productName')
-const $productPrice = qs('#productPrice')
-const $productQuantity = qs('#productQuantity')
+const $productName = qs('#productName')  as HTMLInputElement | any
+const $productPrice = qs('#productPrice') as HTMLInputElement | any
+const $productQuantity = qs('#productQuantity') as HTMLInputElement | any
 
-const $back = qs('#back')
-const $add = qs('#add')
+const $back = qs('#back') as HTMLButtonElement | any
+const $add = qs('#add') as HTMLButtonElement | any
 
-const $checkout = qs('#checkout')
-const $checkoutModal = qs('#checkoutModal')
-const $confirmCheckout = qs('#confirmCheckout')
-const $rejectCheckout = qs('#rejectCheckout')
+const $checkout = qs('#checkout') as HTMLButtonElement | any
+const $checkoutModal = qs('#checkoutModal') as HTMLDivElement | any
+const $confirmCheckout = qs('#confirmCheckout') as HTMLAnchorElement | any
+const $rejectCheckout = qs('#rejectCheckout') as HTMLButtonElement | any
 
-const $export = qs('#export')
-const $exportModal = qs('#exportModal')
-const $confirmExport = qs('#confirmExport')
-const $rejectExport = qs('#rejectExport')
+const $export = qs('#export') as HTMLButtonElement | any
+const $exportModal = qs('#exportModal') as HTMLDivElement | any
+const $confirmExport = qs('#confirmExport') as HTMLAnchorElement | any
+const $rejectExport = qs('#rejectExport') as HTMLButtonElement | any
 
-const $productList = qs('#productList')
-const $sumaryCount = qs("#sumaryCount")
-const $sumaryMoney = qs("#sumaryMoney")
+const $productList = qs('#productList') as HTMLUListElement | any
+const $sumaryCount = qs("#sumaryCount") as HTMLSpanElement | any
+const $sumaryMoney = qs("#sumaryMoney") as HTMLSpanElement | any
 
-const STOREKEY = 'sbStore';
+const STOREKEY: string = 'sbStore';
 const STOREMODEL = {
     currentPurchase: {
         storeName: "Store Name",
@@ -42,11 +42,11 @@ const STOREMODEL = {
 
 let sbStore = STOREMODEL
 let currentPurchase = sbStore.currentPurchase
-let purchaseHistory = sbStore.purchaseHistory
-let products = currentPurchase.products
+let purchaseHistory: any[] = sbStore.purchaseHistory
+let products: any[] = currentPurchase.products
 
-const OpenCheckoutModal = () => $checkoutModal.classList.remove('d-none')
-const CloseCheckoutModal = () => $checkoutModal.classList.add('d-none')
+const OpenCheckoutModal = () => $checkoutModal?.classList.remove('d-none')
+const CloseCheckoutModal = () => $checkoutModal?.classList.add('d-none')
 const CheckoutData = () => {
     purchaseHistory.push(currentPurchase)
 
@@ -60,10 +60,10 @@ const CheckoutData = () => {
     CloseCheckoutModal()
 }
 
-const CloseExportModal = () => $exportModal.classList.add('d-none')
+const CloseExportModal = () => $exportModal?.classList.add('d-none')
 const CleanExportDownload = () => {
-    $confirmExport.setAttribute('href', '')
-    $confirmExport.setAttribute('download', '')
+    $confirmExport?.setAttribute('href', '')
+    $confirmExport?.setAttribute('download', '')
     CloseExportModal()
 }
 const FillConfirmExport = () => {
@@ -72,42 +72,44 @@ const FillConfirmExport = () => {
     const todayDate = new Date()
     const dateFormatted = `${todayDate.getDate()}.${todayDate.getMonth() + 1}.${todayDate.getFullYear()}`
 
-    $confirmExport.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(data))
-    $confirmExport.setAttribute('download', 'shopping-data-' + dateFormatted + '.json')
+    $confirmExport?.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(data))
+    $confirmExport?.setAttribute('download', 'shopping-data-' + dateFormatted + '.json')
 }
 const OpenExportModal = () => {
     FillConfirmExport()
-    $exportModal.classList.remove('d-none')
+    $exportModal?.classList.remove('d-none')
 }
 
 const CountTotalItems = ($productList = qs("#productList")) => {
+    if(!$productList) return 0
     return qsa('.item', $productList).length
 }
 
 const CountCashTotalPrice = ($productList = qs("#productList")) => {
+    if(!$productList) return 0
     return qsa('.item div:nth-child(3)', $productList)
-        .reduce((sum, $priceDiv) => sum += parseFloat($priceDiv.innerText), 0)
+            .reduce((sum, $priceDiv) => sum += parseFloat(($priceDiv as HTMLElement).innerText), 0)
 }
 
-const RemoveItem = (item) => {
-    products.splice(item, 1)
+const RemoveItem = (itemIdx: number) => {
+    products.splice(itemIdx, 1)
 
     UpdateUI()
 }
 
 const productListHeader = "<li><h4><div>➖🛒</div><div>🛍️</div><div>💲</div><div>±</div></h4></li>";
 const UpdateUI = () => {
-    currentPurchase.storeName = $storeName.value
-    currentPurchase.date = $date.value
+    currentPurchase.storeName = $storeName.value;
+    currentPurchase.date = ($date as HTMLInputElement).value;
 
     $productList.innerHTML = productListHeader
     for (let item in products) {
         const product = products[item]
 
         const $template = document.createElement('template')
-        $template.innerHTML = `<li class="item"><h4><button id="${item}" onclick="RemoveItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`
+        $template.innerHTML = `<li class="item"><h4><button id="${item}" onclick="RemoveItem(${item})">➖🛒</button><div>${product.name}</div><div>${product.price}</div><div>${product.quantity}</div></h4></li>`;
 
-        $productList.appendChild($template.content.firstChild)
+        $productList.appendChild(($template?.content?.firstChild as Node))
     }
 
     $sumaryCount.innerText = CountTotalItems()
@@ -162,5 +164,5 @@ $export.onclick = OpenExportModal
 $confirmExport.onclick = CloseExportModal
 $rejectExport.onclick = CleanExportDownload
 
-sbStore = JSON.parse(localStorage.getItem(STOREKEY)) || structuredClone(STOREMODEL)
-start()
+sbStore = localStorage.getItem(STOREKEY)? JSON.parse(String(localStorage.getItem(STOREKEY))) : structuredClone(STOREMODEL)
+//start()

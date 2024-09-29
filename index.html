@@ -1,70 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shopping Buddy</title>
-</head>
-
-<body>
-    <div class="modal d-none" id="checkoutModal">
-        <div>
-            <h1>◀🛒👍</h1>
-
-            <h2><button id="confirmCheckout">👍</button> <button id="rejectCheckout">👎</button></h2>
-
-        </div>
-    </div>
-
-    <div class="modal d-none" id="exportModal">
-        <div>
-            <h1>◀🎲</h1>
-
-            <h2><a id="confirmExport">👍</a><button id="rejectExport">👎</button></h2>
-        </div>
-    </div>
-
-    <h1>🛒<input type="text" id="storeName"> <input type="date" id="date"></h1>
-    <h4><button id="back">◀</button></h4>
-
-    <h3>
-        <label for="productName">🛍️</label>
-        <input id="productName" type="text">
-    </h3>
-
-    <h3>
-        <label for="productPrice">💲</label>
-        <input id="productPrice" type="text" oninput="this.value = this.value.replace(',', '.').replace(/[a-z]/g,'')">
-    </h3>
-
-    <h3>
-        <label for="productQuantity">±</label>
-        <input id="productQuantity" type="number">
-    </h3>
-
-    <h1><button id="add">➕</button></h1>
-
-    <h4>
-        <ul id="productList">
-
-        </ul>
-        <h3 id="productSumary">
-
-            🛍️±<span id="sumaryCount"></span>
-            💲<span id="sumaryMoney"></span>
-
-        </h3>
-    </h4>
-
-    <h2><button id="checkout">🛒👍</button></h2>
-
-    <h2 class="export"><button id="export">◀🎲</button></h2>
-</body>
-
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
