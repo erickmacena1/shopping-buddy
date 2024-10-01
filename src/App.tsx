@@ -1,10 +1,12 @@
-// import { useEffect } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-// import start from './shopping_service'
+import start from './shopping_service'
 
 function App() {
 
-  // useEffect(start, [])
+  useEffect(() => {
+    start()
+  }, [])
  
   return (
     <>
@@ -49,12 +51,12 @@ function App() {
         <ul id="productList">
 
         </ul>
-        <h3 id="productSumary">
+        <strong id="productSumary">
 
           🛍️±<span id="sumaryCount"></span>
           💲<span id="sumaryMoney"></span>
 
-        </h3>
+        </strong>
       </h4>
 
       <h2><button id="checkout">🛒👍</button></h2>
