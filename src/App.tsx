@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import './App.css'
 import start from './shopping_service'
+import IconItem from './components/IconItem/IconItem'
 
 function App() {
 
@@ -45,7 +46,7 @@ function App() {
         <input id="productQuantity" type="number" />
       </h3>
 
-      <h1><button id="add">➕</button></h1>
+      <h1><button id="add"><IconItem name="add" lang="pt"/></button></h1>
 
       <h4>
         <ul id="productList">
