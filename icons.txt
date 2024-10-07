@@ -2,13 +2,15 @@ Buddy🐱‍👤
 
 Add: ➕
 Back: ◀
+Supermarket: 🛒
+Checkout: ◀🛒
 Product: 🛍️
+AddProduct: ➕🛍️
+RemoveProduct: ➖🛍️
+AllProducts: 🔢🛍️
+Quantity: 🔢
 Cash: 💲
-Quantity: ±
-ItemAdd: ➕🛒
-Cancel: ×
-AllItens: ±🛒
-ItemRemove: ➖🛒
+Cancel: ❌
 Yes: 👍
 No: 👎
 Export: ◀🎲
