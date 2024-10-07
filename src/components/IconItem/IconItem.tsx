@@ -1,34 +1,35 @@
-type LangOptions = "pt" | "icon";
-
-interface ItemVersions {
-    "pt": string;
-    "icon": string
-}
-
-interface ItemOptions {
-    [name: string]: ItemVersions
-}
-
-const iconItemList: ItemOptions = {
+const iconItems = {
     "product": {
-        "pt": "Protudo",
-        "icon": "🛍️"
+        "pt": "Produto",
+        "icon": "🛍️",
     },
     "add": {
         "pt": "Adicionar",
-        "icon": "➕"
-    }
-}
+        "icon": "➕",
+    },
+    "yes": {
+        "pt": "Sim",
+        "icon": "👍"
+    },
+    "no": {
+        "pt": "Não",
+        "icon": "👎"
+    },
+} as const
+
+type ItemName = keyof typeof iconItems
+type LangOptions = keyof typeof iconItems[ItemName]
 
 interface IconItemProps {
-    name: string;
+    name: ItemName;
     lang: LangOptions;
 }
 
 function IconItem({ name, lang }: IconItemProps) {
     return (
-        <span>{iconItemList[name][lang]}</span>
+        <span>{iconItems[name][lang]}</span>
     )
 }
 
 export default IconItem
+export type { ItemName, LangOptions }
